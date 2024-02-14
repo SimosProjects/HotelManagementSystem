@@ -1,0 +1,145 @@
+@startuml class_diagram
+
+class RoomCharge {
+    - room: Room
+    - chargeName: string
+    - chargeAmount: int
+    + RoomCharge(room: Room, chargeName: string, chargeAmount: int)
+    + ~RoomCharge()
+    + getRoom(): Room
+    + getChargeName(): string
+    + getChargeAmount(): int
+}
+
+class Room {
+    - roomNumber: int
+    - roomStyle: string
+    - bookingPrice: int
+    + Room()
+    + Room(roomNumber: int, roomStyle: string, bookingPrice: int)
+    + ~Room()
+    + getRoomNumber(): int
+    + getRoomStyle(): string
+    + getBookingPrice(): int
+}
+
+class RoomKey {
+    - room: Room
+    - keyId: int
+    - barcode: string
+    + RoomKey(room: Room, keyId: int, barcode: string)
+    + ~RoomKey()
+    + getRoom(): Room
+    + getKeyId(): int
+    + getBarcode(): string
+}
+
+class Invoice {
+    - room: Room
+    - charges: vector
+    + Invoice(room: Room, charges: vector)
+    + ~Invoice()
+    + getRoom(): Room
+    + getCharges(): vector
+}
+
+class RoomBooking {
+    - room: Room
+    - guestName: string
+    - numberOfNights: int
+    + RoomBooking(room: Room, guestName: string, numberOfNights: int)
+    + ~RoomBooking()
+    + getRoom(): Room
+    + getGuestName(): string
+    + getNumberOfNights(): int
+}
+
+class RoomHouseKeeping {
+    - room: Room
+    - date: string
+    - status: string
+    + RoomHouseKeeping(room: Room, date: string, status: string)
+    + ~RoomHouseKeeping()
+    + getRoom(): Room
+    + getDate(): string
+    + getStatus(): string
+}
+
+class Hotel {
+    - locations: vector
+    - name: string
+    + Hotel(name: string)
+    + ~Hotel()
+    + addLocation(location: HotelLocation)
+    + getName(): string
+    + getLocations(): vector
+}
+
+class HotelLocation {
+    - location: string
+    - address: string
+    - phoneNumber: int
+    + HotelLocation(location: string, address: string, phoneNumber: int)
+    + ~HotelLocation()
+    + getLocation(): string
+    + getAddress(): string
+    + getPhoneNumber(): int
+}
+
+class AccountType {
+    GUEST
+    RECEPTIONIST
+    HOUSEKEEPER
+    SERVER
+}
+
+class Notification {
+    - message: string
+    - recipient: string
+    + Notification(message: string, recipient: string)
+    + ~Notification()
+    + getMessage(): string
+    + getRecipient(): string
+}
+
+class Account {
+    - username: string
+    - password: string
+    - type: AccountType
+    + Account(username: string, password: string, type: AccountType)
+    + ~Account()
+    + getUsername(): string
+    + getPassword(): string
+    + getType(): AccountType
+}
+
+class Main {
+    + main(): int
+}
+
+together {
+    class RoomCharge
+    class Invoice
+    class Room
+    class RoomBooking
+    class RoomHouseKeeping
+}
+
+together {
+    class Hotel
+    class HotelLocation
+}
+
+RoomCharge o-- Room
+Invoice o- Room
+Room -o RoomKey
+Room --o RoomBooking
+Room --o RoomHouseKeeping
+RoomBooking -[hidden]-- HotelLocation
+HotelLocation <|. Hotel
+Hotel -[hidden]> AccountType
+HotelLocation -[hidden]- Notification
+Notification -[hidden]> Account
+Account -[hidden]> Main
+
+@enduml
